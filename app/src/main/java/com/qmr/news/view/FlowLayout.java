@@ -2,6 +2,7 @@ package com.qmr.news.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,36 +17,45 @@ public class FlowLayout extends ViewGroup {
 
     private static final String TAG = "FlowLayout";
 
-
-    private int rowNum = 0;//行数 从1开始
-
     public FlowLayout(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    static int getViewHeight(View v) {
+        //return v.getMeasuredHeight() + v.getPaddingBottom() + v.getPaddingTop();
+        return v.getMeasuredHeight();
+    }
+
+    static int getViewWidth(View v) {
+        //return v.getMeasuredWidth() + v.getPaddingStart() + v.getPaddingEnd();
+        return v.getMeasuredWidth();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if(getChildCount()== 0){
-            super.onMeasure(widthMeasureSpec,heightMeasureSpec);
+        if (getChildCount() == 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
 
-        measureChildren(widthMeasureSpec,heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+
         final int childCount = getChildCount();
-        final int maxWidth = getWidthWithPadding();
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        final int maxWidth = width;
 
         int currentWidth = getPaddingStart();
 
@@ -54,26 +64,32 @@ public class FlowLayout extends ViewGroup {
         View child = getChildAt(0);
         MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
         currentTop += lp.topMargin;
-        //rowHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
 
-        for(int i = 0;i < childCount;i++){
+        Log.i(TAG, "onMeasure: maxWidth :" + maxWidth);
+
+        for (int i = 0; i < childCount; i++) {
             child = getChildAt(i);
             lp = (MarginLayoutParams) child.getLayoutParams();
-            if((currentWidth + child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin) <=maxWidth){
-                currentWidth += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            int calcRight = (currentWidth + getViewWidth(child) + lp.leftMargin);
+            if (calcRight <= maxWidth) {
+                currentWidth = currentWidth + child.getMeasuredWidth() + lp.rightMargin;
+                Log.i(TAG, "onMeasure不换行: " + currentWidth);
+                //currentWidth = currentWidth + child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
                 //doNothing
-            } else {
-                currentTop +=lp.topMargin+lp.bottomMargin + getViewHeight(child);
-                currentWidth = 0;
-                rowNum ++;
-                currentWidth += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            } else {//换行
+                currentTop = currentTop + lp.topMargin + lp.bottomMargin + getViewHeight(child);
+                currentWidth = getPaddingStart() + lp.leftMargin;
+                //calcRight = (currentWidth + getViewWidth(child));//currentWidth变了 需要重新算
+                //child.layout(currentWidth, currentTop, calcRight, currentTop + getViewHeight(child));
+                Log.i(TAG, "onMeasure换行: " + currentWidth);
+                currentWidth += child.getMeasuredWidth() + lp.rightMargin;
             }
         }//end for
 
-        currentTop += getViewHeight(child) + lp.bottomMargin;
+        currentTop = currentTop + child.getMeasuredHeight() + lp.bottomMargin;
 
-        setMeasuredDimension(widthMode == MeasureSpec.EXACTLY?width:maxWidth,
-                heightMode == MeasureSpec.EXACTLY?height:currentTop);
+        setMeasuredDimension(widthMode == MeasureSpec.EXACTLY ? width : maxWidth,
+                heightMode == MeasureSpec.EXACTLY ? height : currentTop);
 
     }
 
@@ -85,40 +101,29 @@ public class FlowLayout extends ViewGroup {
         int childCount = getChildCount();
         int maxWidth = getWidthWithPadding();
 
-        for(int i = 0;i < childCount;i++){
+        for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
             MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
             currentWidth += lp.leftMargin;
             //rowHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
-            int calcRight = (currentWidth + getViewWidth(child) + lp.leftMargin);
-            if(calcRight <=maxWidth){
-                child.layout(currentWidth,currentTop,calcRight,currentTop + getViewHeight(child));
+            int calcRight = (currentWidth + getViewWidth(child));
+            if (calcRight <= maxWidth) {
+                child.layout(currentWidth, currentTop, calcRight, currentTop + getViewHeight(child));
                 currentWidth += child.getMeasuredWidth() + lp.rightMargin;
                 //doNothing
-            } else {
-                currentTop = currentTop + lp.topMargin+lp.bottomMargin + getViewHeight(child);
-                currentWidth = lp.leftMargin + getPaddingStart();
-                calcRight = (currentWidth + getViewWidth(child) + lp.leftMargin);
-                child.layout(currentWidth,currentTop,calcRight,currentTop + getViewHeight(child));
+            } else {//需要换列
+                currentTop = currentTop + lp.topMargin + lp.bottomMargin + getViewHeight(child);
+                currentWidth = getPaddingStart() + lp.leftMargin;
+                calcRight = (currentWidth + getViewWidth(child));//currentWidth变了 需要重新算
+                child.layout(currentWidth, currentTop, calcRight, currentTop + getViewHeight(child));
                 currentWidth += child.getMeasuredWidth() + lp.rightMargin;
             }
         }
 
     }
 
-    static int getViewHeight(View v){
-        //return v.getMeasuredHeight() + v.getPaddingBottom() + v.getPaddingTop();
-        return v.getMeasuredHeight();
-    }
-
-    static int getViewWidth(View v){
-        //return v.getMeasuredWidth() + v.getPaddingStart() + v.getPaddingEnd();
-        return v.getMeasuredWidth();
-    }
-
-
-    private int getWidthWithPadding(){
-        return getWidth() - getPaddingStart() - getPaddingEnd();
+    private int getWidthWithPadding() {
+        return getMeasuredWidth() - getPaddingRight();
     }
 
     @Override
@@ -128,6 +133,6 @@ public class FlowLayout extends ViewGroup {
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new MarginLayoutParams(getContext(),attrs);
+        return new MarginLayoutParams(getContext(), attrs);
     }
 }
