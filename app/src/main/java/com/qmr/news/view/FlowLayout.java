@@ -119,7 +119,6 @@ public class FlowLayout extends ViewGroup {
                 currentWidth += child.getMeasuredWidth() + lp.rightMargin;
             }
         }
-
     }
 
     private int getWidthWithPadding() {
