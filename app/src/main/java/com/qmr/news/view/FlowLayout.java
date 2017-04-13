@@ -1,10 +1,17 @@
 package com.qmr.news.view;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.qmr.news.adapter.OnDataSetChanged;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -13,9 +20,11 @@ import android.view.ViewGroup;
  * @author qmr777
  */
 
-public class FlowLayout extends ViewGroup {
+public class FlowLayout extends ViewGroup implements OnDataSetChanged {
 
     private static final String TAG = "FlowLayout";
+
+    private Adapter mAdapter;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -30,12 +39,11 @@ public class FlowLayout extends ViewGroup {
     }
 
     static int getViewHeight(View v) {
-        //return v.getMeasuredHeight() + v.getPaddingBottom() + v.getPaddingTop();
         return v.getMeasuredHeight();
+
     }
 
     static int getViewWidth(View v) {
-        //return v.getMeasuredWidth() + v.getPaddingStart() + v.getPaddingEnd();
         return v.getMeasuredWidth();
     }
 
@@ -126,6 +134,11 @@ public class FlowLayout extends ViewGroup {
     }
 
     @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new MarginLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+    }
+
+    @Override
     protected LayoutParams generateLayoutParams(LayoutParams p) {
         return new MarginLayoutParams(p);
     }
@@ -134,4 +147,85 @@ public class FlowLayout extends ViewGroup {
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
+
+    public void setAdapter(Adapter adapter){
+        this.mAdapter = adapter;
+        adapter.registerDataSetChange(this);
+        setNewAdapter();
+    }
+
+    private void setNewAdapter(){
+        onChanged();
+    }
+
+    @Override
+    public void onChanged() {
+        removeAllViews();
+        if(mAdapter!=null){
+            final int itemCount = mAdapter.getCount();
+            for(int i = 0;i<itemCount;i++){
+                View v = mAdapter.getView(this,i,mAdapter.getItem(i));
+                v.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.setSelected(!v.isSelected());
+                    }
+                });
+                addView(v);
+            }
+        }
+    }
+
+
+    public static abstract class Adapter<T>{
+
+        private List<T> mlist = new ArrayList<>();
+
+        private OnDataSetChanged onDataSetChanged;
+
+        public int getCount(){
+            return mlist == null?0:mlist.size();
+        }
+
+        private void registerDataSetChange(OnDataSetChanged onDataSetChanged){
+            this.onDataSetChanged = onDataSetChanged;
+        }
+
+        public void setData(List<T> list){
+            mlist = list;
+            if(onDataSetChanged!=null)
+                onDataSetChanged.onChanged();
+        }
+
+        public void addData(List<T> list){
+            mlist.addAll(list);
+            if(onDataSetChanged!=null)
+                onDataSetChanged.onChanged();
+        }
+
+        public void addData(T t){
+            mlist.add(t);
+            if(onDataSetChanged!=null)
+                onDataSetChanged.onChanged();
+        }
+
+        //不需要addView
+        public abstract View getView(FlowLayout parent,int position,T data);
+
+        public T getItem(int position){
+            return mlist.get(position);
+        }
+
+        public List<T> getDataList(){
+            return mlist;
+        }
+
+        public void notifyDataSetChanged(){
+            if(onDataSetChanged!=null)
+                onDataSetChanged.onChanged();
+        }
+
+    }
+
+
 }
