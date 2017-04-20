@@ -1,66 +1,190 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?><!--
+<com.qmr.news.view.SlideBackLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#9000"
+    tools:context="com.qmr.news.activity.test.FlowLayoutActivity">-->
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context="com.qmr.news.activity.test.FlowLayoutActivity">
 
 
-    <TextView
-        android:gravity="center"
-        android:text="123123"
-        android:padding="5dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/bg_fl_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/et_add"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintRight_toLeftOf="@+id/btn_add"
+        android:layout_marginRight="8dp" />
 
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="添加"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp" />
 
 
     <com.qmr.news.view.FlowLayout
+        android:id="@+id/fl_main"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:padding="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_add">
 
         <TextView
-            android:gravity="center"
-            android:text="123123"
-            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/bg_fl_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
 
         <TextView
-            android:gravity="center"
-            android:text="123dfbhdfhdfghdbh123"
-            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/bg_fl_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
 
         <TextView
-            android:gravity="center"
-            android:text="123dfbhdfhdfghdbh123"
-            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/bg_fl_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
 
         <TextView
-            android:gravity="center"
-            android:text="123123"
-            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_fl_et"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="123123" />
 
     </com.qmr.news.view.FlowLayout>
 
-</LinearLayout>
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_main"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="-1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+</android.support.constraint.ConstraintLayout>

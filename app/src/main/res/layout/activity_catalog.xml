@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +9,7 @@
     tools:context="com.qmr.news.activity.test.CatalogActivity">
 
     <Button
+        android:background="@drawable/bg_fl_et"
         android:id="@+id/btn_behavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +21,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ptr recyclerview" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="flow layout" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pure weather" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_eb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="eventbus" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_ns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NestedScroll" />
+
 
 
 </LinearLayout>

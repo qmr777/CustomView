@@ -111,6 +111,7 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
 
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
+            child.setTag(i);
             MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
             currentWidth += lp.leftMargin;
             //rowHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
@@ -123,6 +124,8 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
                 currentTop = currentTop + lp.topMargin + lp.bottomMargin + getViewHeight(child);
                 currentWidth = getPaddingStart() + lp.leftMargin;
                 calcRight = (currentWidth + getViewWidth(child));//currentWidth变了 需要重新算
+                if(calcRight > maxWidth)
+                    calcRight = maxWidth;
                 child.layout(currentWidth, currentTop, calcRight, currentTop + getViewHeight(child));
                 currentWidth += child.getMeasuredWidth() + lp.rightMargin;
             }
@@ -181,6 +184,8 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
 
         private List<T> mlist = new ArrayList<>();
 
+        private View.OnClickListener clickListener;
+
         private OnDataSetChanged onDataSetChanged;
 
         public int getCount(){
@@ -201,6 +206,10 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
             mlist.addAll(list);
             if(onDataSetChanged!=null)
                 onDataSetChanged.onChanged();
+        }
+
+        public void setItemClickListener(View.OnClickListener listener){
+            clickListener = listener;
         }
 
         public void addData(T t){

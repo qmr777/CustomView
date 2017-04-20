@@ -2,6 +2,7 @@ package com.qmr.news.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.ViewCompat;
@@ -111,6 +112,11 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
     public void onStopNestedScroll(View child) {
         super.onStopNestedScroll(child);
         setPosition(0);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
     }
 
     private void setPosition(int position) {

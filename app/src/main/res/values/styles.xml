@@ -10,13 +10,25 @@
         <item name="button_bg">#666666</item>
     </style>
 
+    <style name="ToolbarTitleAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/text_color_holo_gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="NoActionBar" parent="AppTheme">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="button_bg">#666666</item>
+    </style>
 
+    <style name="SlideBackTheme" parent="NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
+    <style name="PureWeatherTheme" parent="NoActionBar">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="ToolbarThemeCopy" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
