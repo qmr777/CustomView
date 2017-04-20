@@ -197,7 +197,8 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
         }
 
         public void setData(List<T> list){
-            mlist = list;
+            mlist.clear();
+            mlist.addAll(list);
             if(onDataSetChanged!=null)
                 onDataSetChanged.onChanged();
         }
