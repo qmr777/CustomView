@@ -47,6 +47,7 @@ public class FlowLayoutActivity extends AppCompatActivity{
     Button btn_add;
 
 
+
     FlowLayout.Adapter<ChannelEntity> adapter;
 
     @Override
