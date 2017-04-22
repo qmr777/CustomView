@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
@@ -21,15 +23,16 @@ import android.widget.Scroller;
  * @author qmr777
  */
 
-public class PTRecyclerView extends RelativeLayout implements NestedScrollingParent {
+public class PTRecyclerView extends LinearLayout implements NestedScrollingParent {
 
     public static final int REFRESH_DISTANCE = 200;//距离 超过多少后刷新加载
     private static final String TAG = "PTRecyclerView";
     private static final int RV_CONTENT = View.generateViewId();
     private RecyclerView rv;
 
-    private View headerView;
-    private View footerView;
+    FrameLayout headerView;
+    FrameLayout footerView;
+
 
     private int totalY = 0;//上拉下滑的距离，上拉为
 
@@ -45,12 +48,21 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
 
     public PTRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setOrientation(VERTICAL);
+//        setClipChildren(false);
+        headerView = new FrameLayout(context);
+        footerView = new FrameLayout(context);
         scroller = new Scroller(context);
         rv = new RecyclerView(context);
         rv.setLayoutManager(new LinearLayoutManager(context));
         rv.setId(RV_CONTENT);
-        addView(rv, 0, new MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        addView(headerView,new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(rv, new MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
+
+        addView(footerView,new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     public RecyclerView getRecyclerView() {
@@ -66,25 +78,21 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
     }
 
     public void addHeaderView(View header) {
-        if (this.headerView != null)
-            removeView(headerView);
-        RelativeLayout.LayoutParams params
-                = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        params.addRule(RelativeLayout.ABOVE, RV_CONTENT);
-        headerView = header;
-        addView(header, 0, params);
+        headerView.removeAllViews();
+        LayoutParams params
+                = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
+        params.topMargin = -500;
+        headerView.addView(header);
+        headerView.setLayoutParams(params);
 
     }
 
     public void addFooterView(View footer) {
-        if (footerView != null)
-            removeView(footerView);
-        footerView = footer;
-        RelativeLayout.LayoutParams params
-                = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, RV_CONTENT);
-        addView(footer, params);
+        footerView.removeAllViews();
+        LayoutParams params
+                = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,500);
+        footerView.addView(footer);
+        footerView.setLayoutParams(params);
     }
 
     @Override
@@ -98,12 +106,17 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
         Log.i(TAG, "onNestedScroll: " + dyUnconsumed);
         if (dyUnconsumed < 0 && headerView != null) {//滑到底了
             totalY += dyUnconsumed;
-            rv.setTop(Math.abs(totalY / 2));
-            headerView.setBottom(Math.abs(totalY / 2));
+            //rv.setTop(Math.abs(totalY / 2));
+            scrollTo(0,-Math.abs(totalY / 2));
+            //headerView.setBottom(Math.abs(totalY / 2));
         } else if(dyUnconsumed > 0 && footerView!=null){
             totalY+=dyUnconsumed;
+            scrollTo(0,Math.abs(totalY / 2));
+/*
+
             rv.setBottom(getBottom() - totalY/2);
             footerView.setTop(getBottom() - totalY/2);
+*/
 
         }
     }
@@ -120,7 +133,9 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
     }
 
     private void setPosition(int position) {
-        Log.e(TAG, "setPosition: " + totalY);
+        scrollTo(0,position);
+        totalY = 0;
+/*        Log.e(TAG, "setPosition: " + totalY);
         if (totalY < 0) { //下拉刷新
             ValueAnimator va = ValueAnimator.ofInt(Math.abs(totalY), position).setDuration(Math.abs(totalY) / 2);
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -149,7 +164,7 @@ public class PTRecyclerView extends RelativeLayout implements NestedScrollingPar
                 }
             });
             va.start();
-        }
+        }*/
     }
 
     @Override

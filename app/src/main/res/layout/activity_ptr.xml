@@ -6,18 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.qmr.news.activity.test.PTRActivity">
-
-    <Button
-        android:background="?button_bg"
-        android:text="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <com.qmr.news.view.PTRecyclerView
         android:id="@+id/ptr"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+<!--
+
+    <sw.angel.recyclerlayout.layout.SWPullRecyclerLayout
+        android:id="@+id/ptr"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+-->
 
 
 
