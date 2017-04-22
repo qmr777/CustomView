@@ -101,36 +101,41 @@ public class PTRecyclerView extends LinearLayout implements NestedScrollingParen
     }
 
     @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+        super.onNestedPreScroll(target, dx, dy, consumed);
+        Log.i(TAG, "onNestedPreScroll" + dy);
+        if(totalY!=0){
+            Log.i(TAG, "onNestedPreScroll: totalY!=0 " + totalY);
+            totalY += dy;
+            scrollTo(0, totalY/2);
+            consumed[1] = dy;
+        }
+
+    }
+
+    @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
         Log.i(TAG, "onNestedScroll: " + dyUnconsumed);
-        if (dyUnconsumed < 0 && headerView != null) {//滑到底了
+        if(dyUnconsumed!=0) {
             totalY += dyUnconsumed;
-            //rv.setTop(Math.abs(totalY / 2));
-            scrollTo(0,-Math.abs(totalY / 2));
-            //headerView.setBottom(Math.abs(totalY / 2));
-        } else if(dyUnconsumed > 0 && footerView!=null){
-            totalY+=dyUnconsumed;
-            scrollTo(0,Math.abs(totalY / 2));
-/*
-
-            rv.setBottom(getBottom() - totalY/2);
-            footerView.setTop(getBottom() - totalY/2);
-*/
-
+            scrollTo(0, totalY);
         }
+
     }
 
     @Override
     public void onStopNestedScroll(View child) {
         super.onStopNestedScroll(child);
-        setPosition(0);
+        Log.i(TAG, "onStopNestedScroll");
+        scrollTo(0,0);
+        totalY = 0;
     }
 
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        return super.onSaveInstanceState();
-    }
+/*    private void smoothScrollTo(int desty){
+        int dy = desty - getScrollY();
+        scroller.startScroll(0,getScrollY(),0,dy);
+    }*/
 
     private void setPosition(int position) {
         scrollTo(0,position);

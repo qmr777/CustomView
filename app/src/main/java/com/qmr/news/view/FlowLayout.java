@@ -177,8 +177,6 @@ public class FlowLayout extends ViewGroup implements OnDataSetChanged {
                 addView(v);
             }
         }
-
-
     }
 
 
